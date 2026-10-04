@@ -79,6 +79,12 @@ examples/run-all.sh
 
 Each example exports a three.js scene, builds the Godot side, captures both, and compares. After a passing run, the script also runs negative controls: deliberately wrong Godot sides (for example, forgetting to divide the light intensity by PI) that the comparison must reject. See `examples/README.md`.
 
+## Playable migration sample
+
+[Example 04](examples/04-playable-migration/README.md) adds a tiny original Three.js game and an editable Godot project: move a box around a wall, reach a goal, and restart. Input, game state and UI are rebuilt explicitly, with fixed-tick behavior comparison and collision/restart negative controls. It is a bounded teaching sample, not an automatic full-game converter.
+
+Start with the [migration walkthrough](docs/playable-migration/README.md) and [validation record](docs/playable-migration/VALIDATION.md). Run `examples/04-playable-migration/run.sh` for model/native behavior checks, or add `--visual` for the separate browser/rendering checks. Existing examples 01–03 and their recorded claims remain separate.
+
 ## Tests
 
 ```

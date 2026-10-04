@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "units": "metres",
+  "tickHz": 60,
+  "speed": 3,
+  "playerHalfSize": 0.4,
+  "spawn": [
+    -3,
+    0
+  ],
+  "wall": {
+    "center": [
+      0,
+      0
+    ],
+    "size": [
+      1,
+      3
+    ],
+    "height": 1.5
+  },
+  "floorSize": [
+    12,
+    9
+  ],
+  "goal": {
+    "center": [
+      3,
+      0
+    ],
+    "halfSize": 0.8
+  },
+  "camera": {
+    "position": [
+      0,
+      9,
+      11
+    ],
+    "lookAt": [
+      0,
+      0,
+      0
+    ],
+    "fov": 45,
+    "near": 0.1,
+    "far": 100
+  },
+  "replay": [
+    {
+      "ticks": 60,
+      "move": [
+        1,
+        0
+      ]
+    },
+    {
+      "ticks": 50,
+      "move": [
+        0,
+        -1
+      ]
+    },
+    {
+      "ticks": 80,
+      "move": [
+        1,
+        0
+      ]
+    },
+    {
+      "ticks": 50,
+      "move": [
+        0,
+        1
+      ]
+    },
+    {
+      "ticks": 10,
+      "move": [
+        1,
+        1
+      ]
+    },
+    {
+      "ticks": 1,
+      "move": [
+        0,
+        0
+      ],
+      "restart": true
+    },
+    {
+      "ticks": 9,
+      "move": [
+        0,
+        0
+      ]
+    }
+  ],
+  "snapshots": [
+    {
+      "id": "start",
+      "tick": 0
+    },
+    {
+      "id": "wall-contact",
+      "tick": 60
+    },
+    {
+      "id": "goal",
+      "tick": 240
+    },
+    {
+      "id": "restart",
+      "tick": 260
+    }
+  ],
+  "positionTolerance": 0.0002,
+  "cornerEpsilon": 0.0002
+}

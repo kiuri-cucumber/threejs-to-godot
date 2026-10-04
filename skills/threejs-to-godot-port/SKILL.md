@@ -32,6 +32,10 @@ Do not use it for Godot 3, for a one-off model conversion (Blender's glTF import
 6. Do not assume physics matches. It is a new system to measure (stage 5).
 7. Keep unexplained differences in the report as unexplained. Do not invent a cause.
 
+### Playable input, state and UI
+
+For a game with input, collision, success/restart state or DOM UI, follow `references/input-state-ui.md` in addition to the static workflow. The original paired `examples/04-playable-migration/` fixture demonstrates manual native reconstruction and fixed-tick traces. Run its behavior checks and separate browser/rendering checks; do not imply that glTF or these scripts automatically translate a full game. A passing headless trace is not a passing image comparison.
+
 ## 3. Set up
 
 ```
