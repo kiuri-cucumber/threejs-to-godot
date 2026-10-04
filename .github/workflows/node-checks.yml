@@ -1,0 +1,41 @@
+name: Deterministic Node checks
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: node-checks-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  node-tests:
+    name: Node unit and playable model tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      CI: true
+      TZ: UTC
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - name: Check out source without persisted credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, verified 2026-10-04
+        with:
+          persist-credentials: false
+      - name: Set up the documented Node version
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.14.0'
+      - name: Install locked tool dependencies without lifecycle scripts
+        working-directory: skills/threejs-to-godot-port/scripts
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Run deterministic tool tests
+        working-directory: skills/threejs-to-godot-port/scripts
+        run: npm run test:unit
+      - name: Run playable source model and contract tests
+        run: node --test examples/04-playable-migration/tests/model.test.mjs
+      - name: Declare validation scope
+        run: echo 'Browser integration, native Godot, GPU/rendered comparisons and Web export are not run by this workflow.'

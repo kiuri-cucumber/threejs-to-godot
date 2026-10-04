@@ -33,6 +33,7 @@ It comes from a real port done by an AI agent. The record, with eight side-by-si
 | `compare-shots.mjs` | Compares paired screenshots (brightness, color, blocks, probes, shadow ratio, outline pixels, camera pose) and writes a side-by-side image and a report |
 | `capture-three.mjs`, `godot/capture_godot.gd` | Capture the two sides from one shot sheet |
 | `doctor.mjs` | Checks the environment, including that a Godot window can draw |
+| `preflight.mjs` | Offline supported/manual/unsupported planning from declared gameplay/assets and optional existing loss/settings reports; never certifies complete portability |
 
 ## Install
 
@@ -79,13 +80,34 @@ examples/run-all.sh
 
 Each example exports a three.js scene, builds the Godot side, captures both, and compares. After a passing run, the script also runs negative controls: deliberately wrong Godot sides (for example, forgetting to divide the light intensity by PI) that the comparison must reject. See `examples/README.md`.
 
+## Playable migration sample
+
+[Example 04](examples/04-playable-migration/README.md) adds a tiny original Three.js game and an editable Godot project: move a box around a wall, reach a goal, and restart. Input, game state and UI are rebuilt explicitly, with fixed-tick behavior comparison and collision/restart negative controls. It is a bounded teaching sample, not an automatic full-game converter.
+
+Start with the [migration walkthrough](docs/playable-migration/README.md) and [validation record](docs/playable-migration/VALIDATION.md). Run `examples/04-playable-migration/run.sh` for model/native behavior checks, or add `--visual` for the separate browser/rendering checks. Existing examples 01–03 and their recorded claims remain separate.
+
+## Compatibility preflight
+
+Before exporting, use the [offline preflight guide](skills/threejs-to-godot-port/references/preflight.md) to inventory input, UI, state, animation, shaders and external assets. The checker reuses the existing export audit rules and treats unknowns as manual work. It never executes source JavaScript or fetches assets.
+
+```sh
+node skills/threejs-to-godot-port/scripts/preflight.mjs --inventory examples/04-playable-migration/migration-inventory.json
+```
+
+The playable source correctly reports manual reconstruction work. `--strict` returns exit 2 while manual or unsupported items remain; even an all-supported result does not verify a port.
+
 ## Tests
 
 ```
 cd skills/threejs-to-godot-port/scripts
+npm run test:unit                     # explicit deterministic Node-only scope
 npm test                              # unit tests and Chromium tests
 GODOT=/path/to/Godot ./test-godot.sh  # Godot-side unit tests, headless
 ```
+
+### Automated check scope
+
+The draft PR's [Node workflow](.github/workflows/node-checks.yml) runs the deterministic tool tests and playable source-model/contract tests with locked dependencies and Node 22.14.0. It has read-only contents permissions, pinned official actions, no persisted checkout credentials, no secrets, and no deployment step. Browser integration, native Godot, rendered/GPU comparisons and Web export are separate checks; this workflow does not silently count them as passed.
 
 ## Capture validation
 

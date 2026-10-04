@@ -1,12 +1,13 @@
 # Examples
 
-Three small examples. Each one is run by a script, and each one fails loudly if something is wrong.
+Four small examples. Each one is run by a script, and each one fails loudly if something is wrong.
 
 | Example | What it shows |
 | --- | --- |
 | `01-basic-lit/` | A plane, a cube and a cylinder under a directional and an ambient light. Exported to glTF, rebuilt in Godot from `settings.json`, compared on three viewpoints. Measures the light unit (Godot energy = three.js intensity / PI) and the Burley against Lambert difference |
 | `02-toon-outline/` | Toon shading with a 3-step gradient map, inverted-hull outlines, vertex colors and a hemisphere light. None of it survives glTF export; the Godot side rebuilds it with `toon.gdshader` and `outline.gdshader` in `godot/port_hook.gd` |
 | `03-physics-recheck/` | Godot only. The protocol for re-verifying physics: path hashes over fresh worlds and across processes, an engine fingerprint to prove which engine ran, and an end-position check against a reference |
+| `04-playable-migration/` | Original playable Three.js game and editable Godot scene: keyboard input, one wall, goal, restart UI, exact-tick behavior traces and negative controls. [Run and validation details](04-playable-migration/README.md) |
 
 ## Run
 
@@ -52,3 +53,5 @@ A window opens briefly for each Godot capture. Outputs go to `<example>/out/` (i
 ## About the thresholds
 
 They were set to at least twice the measured value on one machine (Apple M1, Metal, Chromium 153, Godot 4.7). Another GPU or driver may need looser limits. The measured values are in `expected.json`; start there when a run fails on a new machine, and write down the reason when you loosen a limit.
+
+Example 04 has a separate runner: `./04-playable-migration/run.sh` for model/native behavior, or `./04-playable-migration/run.sh --visual` to require browser and rendered-image checks. `run-all.sh` retains its original examples 01–03 scope.

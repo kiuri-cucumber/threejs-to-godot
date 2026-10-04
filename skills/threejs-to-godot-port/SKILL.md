@@ -32,6 +32,10 @@ Do not use it for Godot 3, for a one-off model conversion (Blender's glTF import
 6. Do not assume physics matches. It is a new system to measure (stage 5).
 7. Keep unexplained differences in the report as unexplained. Do not invent a cause.
 
+### Playable input, state and UI
+
+For a game with input, collision, success/restart state or DOM UI, follow `references/input-state-ui.md` in addition to the static workflow. The original paired `examples/04-playable-migration/` fixture demonstrates manual native reconstruction and fixed-tick traces. Run its behavior checks and separate browser/rendering checks; do not imply that glTF or these scripts automatically translate a full game. A passing headless trace is not a passing image comparison.
+
 ## 3. Set up
 
 ```
@@ -47,6 +51,8 @@ Set `TG_CHROMIUM_EXECUTABLE=/path/to/chromium` only when intentionally using an 
 **Done when** every line of `doctor.mjs` says OK. If one fails, fix it before going on.
 
 ## 4. Stage 0: take inventory and choose the carrying path
+
+Start with the offline compatibility checklist in `references/preflight.md`. Run `scripts/preflight.mjs` with a complete declared inventory and optionally the existing loss/settings reports. Unknown input/UI/state/animation/assets require manual inspection; unsupported means outside the current automatic path. An all-supported plan is not proof of a finished port. This check never executes arbitrary source code or fetches assets.
 
 Give the tools a way to reach the scene.
 
