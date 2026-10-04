@@ -52,7 +52,7 @@ test('every bundled path named in SKILL.md exists', () => {
 });
 
 test('every tool in the table has a --help and SKILL.md names it', () => {
-  for (const tool of ['export-scene.mjs', 'dump-settings.mjs', 'capture-three.mjs', 'compare-shots.mjs']) {
+  for (const tool of ['export-scene.mjs', 'dump-settings.mjs', 'capture-three.mjs', 'compare-shots.mjs', 'preflight.mjs']) {
     assert.ok(body.includes(`scripts/${tool}`), `${tool} is named in SKILL.md`);
     const r = spawnSync('node', [path.join(scripts, tool), '--help'], { encoding: 'utf8' });
     assert.equal(r.status, 0);

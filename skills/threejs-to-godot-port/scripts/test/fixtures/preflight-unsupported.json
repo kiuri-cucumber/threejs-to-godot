@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "source": {
+    "label": "Unsupported pipeline fixture",
+    "threeRevision": "185"
+  },
+  "features": {
+    "geometry": "skinned",
+    "camera": "orthographic",
+    "materials": "custom-shader",
+    "input": "unknown",
+    "ui": "dom",
+    "state": "custom",
+    "animation": "clips",
+    "physics": "engine"
+  },
+  "externalAssets": {
+    "inventory": "complete",
+    "items": [
+      {
+        "id": "missing-texture",
+        "kind": "texture",
+        "storage": "remote",
+        "availability": "missing",
+        "license": "unknown"
+      }
+    ]
+  }
+}

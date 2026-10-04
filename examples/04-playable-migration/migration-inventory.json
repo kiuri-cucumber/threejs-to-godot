@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "source": {
+    "label": "04 playable migration source",
+    "threeRevision": "185"
+  },
+  "features": {
+    "geometry": "static-meshes",
+    "camera": "perspective",
+    "materials": "basic-standard",
+    "input": "keyboard-pointer",
+    "ui": "dom",
+    "state": "custom",
+    "animation": "none",
+    "physics": "custom"
+  },
+  "externalAssets": {
+    "inventory": "complete",
+    "items": []
+  }
+}

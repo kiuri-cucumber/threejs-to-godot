@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "source": {
+    "label": "Declared static primitive fixture",
+    "threeRevision": "185"
+  },
+  "features": {
+    "geometry": "static-meshes",
+    "camera": "perspective",
+    "materials": "basic-standard",
+    "input": "none",
+    "ui": "none",
+    "state": "none",
+    "animation": "none",
+    "physics": "none"
+  },
+  "externalAssets": {
+    "inventory": "complete",
+    "items": []
+  }
+}

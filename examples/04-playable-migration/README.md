@@ -23,6 +23,14 @@ godot --path examples/04-playable-migration/godot
 
 The floor, player, wall, goal, camera, collision shapes, and Control UI are visible and editable in the scene tree. `contract.json` is the shared specification; if changing the level, update the scene and specification together, then rerun validation. This fixture uses Compatibility rendering and unlit materials to isolate geometry and gameplay. Existing examples 01/02 cover lighting and materials separately.
 
+## Preflight the source
+
+```sh
+node skills/threejs-to-godot-port/scripts/preflight.mjs --inventory examples/04-playable-migration/migration-inventory.json
+```
+
+Run this from repository root. Input, DOM UI, state and custom collision are reported as manual reconstruction work. The report describes the source's needs; it does not automatically recognize or certify the hand-written port in this example. See the [preflight guide](../../skills/threejs-to-godot-port/references/preflight.md).
+
 ## Validate
 
 ```sh

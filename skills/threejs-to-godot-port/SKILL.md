@@ -52,6 +52,8 @@ Set `TG_CHROMIUM_EXECUTABLE=/path/to/chromium` only when intentionally using an 
 
 ## 4. Stage 0: take inventory and choose the carrying path
 
+Start with the offline compatibility checklist in `references/preflight.md`. Run `scripts/preflight.mjs` with a complete declared inventory and optionally the existing loss/settings reports. Unknown input/UI/state/animation/assets require manual inspection; unsupported means outside the current automatic path. An all-supported plan is not proof of a finished port. This check never executes arbitrary source code or fetches assets.
+
 Give the tools a way to reach the scene.
 
 - Module mode: an ES module that exports `createScene({ THREE, canvas, width, height })` and returns `{ scene, camera, renderer, step?, ready? }`. Use this for scenes you can isolate. See `examples/01-basic-lit/three/scene.mjs`. Only `three` and `three/addons/...` imports are resolved. Any other bare import (for example `cannon-es`) stops with an error that says so; copy or bundle such packages next to the scene file and import them by relative path, or use page mode.

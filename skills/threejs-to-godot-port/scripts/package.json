@@ -14,7 +14,8 @@
     "node": ">=22"
   },
   "scripts": {
-    "test": "node --test \"test/*.test.mjs\""
+    "test": "node --test \"test/*.test.mjs\"",
+    "test:unit": "node run-unit-tests.mjs"
   },
   "dependencies": {
     "playwright": "1.63.0",
