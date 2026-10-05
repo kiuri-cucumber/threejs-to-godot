@@ -109,6 +109,19 @@ GODOT=/path/to/Godot ./test-godot.sh  # Godot-side unit tests, headless
 
 The draft PR's [Node workflow](.github/workflows/node-checks.yml) runs the deterministic tool tests and playable source-model/contract tests with locked dependencies and Node 22.14.0. It has read-only contents permissions, pinned official actions, no persisted checkout credentials, no secrets, and no deployment step. Browser integration, native Godot, rendered/GPU comparisons and Web export are separate checks; this workflow does not silently count them as passed.
 
+The separate [native Godot workflow](.github/workflows/godot-checks.yml) runs on PRs to main, pushes to main and manual dispatches. It pins the official Linux x86_64 Godot 4.6.3 archive and its SHA-256 digest, checks the runtime version, then reuses the existing headless Godot unit tests and playable `verify.mjs`. The normal 261-frame comparison, fresh-process repeat and both corner routes must pass; collision-disabled and restart-ignored controls must fail. Each control must also match the source with that behavior disabled; incomplete or malformed traces fail CI. It needs no npm install and does not repeat the Node workflow's suites. Reports, traces and logs are retained for seven days, including failures; a missing executable, wrong version, timeout or missing success evidence fails the job.
+
+To run the same entry point with an already installed Godot:
+
+```sh
+GODOT=/path/to/godot node .github/scripts/run-godot-checks.mjs
+# Explicitly select another installed version for a separate local check:
+GODOT=/path/to/godot-4.7 GODOT_EXPECTED_VERSION=4.7.stable.official \
+  node .github/scripts/run-godot-checks.mjs
+```
+
+Outputs go to fresh run directories under `out/godot-ci/`. The helper installs nothing. A local check with another version/OS does not establish the pinned Linux CI result. Browser input, rendered comparisons, GPU behavior and Web export remain separate, unexecuted stages of this workflow.
+
 ## Capture validation
 
 Fresh captures write a `captureDefinition` sidecar containing the requested dimensions and the full ordered camera/step timeline. Comparison requires both valid sidecars by default and rejects missing metadata, stale definitions and incorrect image dimensions. Re-capture images created by older versions of the tools. `--image-only` explicitly compares legacy/external PNGs without camera or provenance validation; the report marks that mode.
