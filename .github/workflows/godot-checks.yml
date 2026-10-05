@@ -1,0 +1,63 @@
+name: Native Godot checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: godot-checks-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  native-godot:
+    name: Godot unit tests and playable native comparison
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      CI: true
+      TZ: UTC
+      GODOT_EXPECTED_VERSION: '4.6.3.stable.official'
+    steps:
+      - name: Check out source without persisted credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Set up the documented Node version
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.14.0'
+      - name: Download the pinned official Godot build and verify its SHA-256
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out/godot-ci "$RUNNER_TEMP/godot"
+          exec > >(tee out/godot-ci/download.log) 2>&1
+          archive=Godot_v4.6.3-stable_linux.x86_64.zip
+          # Digest from the official release asset API; never fetched at run time.
+          # https://api.github.com/repos/godotengine/godot-builds/releases/tags/4.6.3-stable
+          sha256=d0bc2113065e481c9c2c2b2c37daa4e8be3fe9e27f0ab9ab0b6096e9a37907f3
+          curl --fail --location --silent --show-error --retry 3 \
+            --connect-timeout 15 --max-time 180 --proto '=https' --proto-redir '=https' \
+            "https://github.com/godotengine/godot-builds/releases/download/4.6.3-stable/$archive" \
+            --output "$RUNNER_TEMP/godot/$archive"
+          cd "$RUNNER_TEMP/godot"
+          printf '%s  %s\n' "$sha256" "$archive" | sha256sum --check --strict -
+          unzip -q "$archive"
+          chmod +x "${archive%.zip}"
+          printf 'GODOT=%s/%s\n' "$PWD" "${archive%.zip}" >> "$GITHUB_ENV"
+      - name: Run required native tests and reject both behavior controls
+        run: node .github/scripts/run-godot-checks.mjs
+      - name: Retain native reports, traces and logs on success or failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: godot-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: out/godot-ci/
+          if-no-files-found: error
+          retention-days: 7
